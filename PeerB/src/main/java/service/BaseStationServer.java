@@ -71,6 +71,8 @@ public class BaseStationServer {
         // los bytes válidos del paquete y no la totalidad del buffer:
         // String message = new String(packet.getData(), packet.getOffset(), packet.getLength(), StandardCharsets.UTF_8);
 
+        String message = new String(packet.getData(), packet.getOffset(), packet.getLength(), StandardCharsets.UTF_8);
+
         // TODO Paso 2.2: Procesar el mensaje con el TelemetryProcessor para obtener la respuesta:
         // String response = this.processor.process(message);
 
