@@ -60,22 +60,35 @@ public class SensorClient {
      */
     public String sendAndReceive(String message) throws IOException {
         // TODO Paso 3.1: Crear un DatagramSocket (se recomienda usar bloque try-with-resources).
+        try (DatagramSocket socket = new DatagramSocket()) {
+            // TODO Paso 3.2: Configurar el tiempo de espera máximo mediante socket.setSoTimeout(this.timeoutMs).
 
-        // TODO Paso 3.2: Configurar el tiempo de espera máximo mediante socket.setSoTimeout(this.timeoutMs).
+            socket.setSoTimeout(this.timeoutMs);
 
-        // TODO Paso 3.3: Convertir 'message' a bytes en UTF-8 y construir el DatagramPacket
-        // con destino InetAddress.getByName(this.serverHost) y this.serverPort.
+            // TODO Paso 3.3: Convertir 'message' a bytes en UTF-8 y construir el DatagramPacket
+            // con destino InetAddress.getByName(this.serverHost) y this.serverPort.
 
-        // TODO Paso 3.4: Enviar el paquete con socket.send(packet).
+            byte[] data = message.getBytes(StandardCharsets.UTF_8);
+            DatagramPacket request = new DatagramPacket(data, data.length, InetAddress.getByName(this.serverHost), this.serverPort);
 
-        // TODO Paso 3.5: Crear un buffer receptor (byte[1024]) y un DatagramPacket para la respuesta.
+            // TODO Paso 3.4: Enviar el paquete con socket.send(packet).
 
-        // TODO Paso 3.6: Recibir la respuesta con socket.receive(responsePacket).
+            socket.send(request);
 
-        // TODO Paso 3.7: Convertir los bytes recibidos a String UTF-8 usando offset y length,
-        // aplicar trim() y retornar la cadena resultante.
+            // TODO Paso 3.5: Crear un buffer receptor (byte[1024]) y un DatagramPacket para la respuesta.
 
-        return null; // Reemplazar con su implementación
+            byte[] buffer = new byte[1024];
+            DatagramPacket response = new DatagramPacket(buffer, buffer.length);
+
+            // TODO Paso 3.6: Recibir la respuesta con socket.receive(responsePacket).
+
+            socket.receive(response);
+
+            // TODO Paso 3.7: Convertir los bytes recibidos a String UTF-8 usando offset y length,
+            // aplicar trim() y retornar la cadena resultante.
+
+            return new String(response.getData(), response.getOffset(), response.getLength(), StandardCharsets.UTF_8);
+        }
     }
 
     public String getServerHost() {

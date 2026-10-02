@@ -76,10 +76,17 @@ public class BaseStationServer {
         // TODO Paso 2.2: Procesar el mensaje con el TelemetryProcessor para obtener la respuesta:
         // String response = this.processor.process(message);
 
+        String response = this.processor.process(message);
+
         // TODO Paso 2.3: Convertir la respuesta a bytes (UTF-8) y construir el DatagramPacket de respuesta
         // dirigido al remitente (packet.getAddress() y packet.getPort()).
 
+        byte[] data = response.getBytes(StandardCharsets.UTF_8);
+
         // TODO Paso 2.4: Enviar el paquete de respuesta a través del socket usando socket.send(...).
+
+        DatagramPacket reply = new DatagramPacket(data, data.length, packet.getAddress(), packet.getPort());
+        socket.send(reply);
     }
 
     /**
